@@ -1,12 +1,20 @@
-// import { createClient } from "@libsql/client";
-// import { drizzle } from "drizzle-orm/libsql";
+import { PrismaClient } from "@prisma/client";
 
-// import env from "@/env";
+import env from "@/env";
 
-// import * as schema from "./schema";
+function prismaClientSingleton() {
+  return new PrismaClient();
+}
 
-// const client = createClient({ url: env.DATABASE_URL, authToken: env.DATABASE_AUTH_TOKEN });
+declare const globalThis: {
+  prismaGlobal: ReturnType<typeof prismaClientSingleton>;
+// eslint-disable-next-line no-restricted-globals
+} & typeof global;
 
-// const db = drizzle(client, { schema });
+const prisma = globalThis.prismaGlobal ?? prismaClientSingleton();
 
-// export default db;
+export default prisma;
+
+if (env.NODE_ENV !== "production") {
+  globalThis.prismaGlobal = prisma;
+}
