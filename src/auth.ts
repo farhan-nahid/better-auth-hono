@@ -8,6 +8,8 @@ import env from "./env";
 
 export const auth = betterAuth({
   appName: "better_auth_hono",
+  baseURL: env.BETTER_AUTH_URL,
+  basePath: "/api/v1/auth",
   database: prismaAdapter(prisma, { provider: "postgresql" }),
   emailAndPassword: {
     enabled: true,
@@ -17,8 +19,6 @@ export const auth = betterAuth({
     maxPasswordLength: 20,
     resetPasswordTokenExpiresIn: 60,
     sendResetPassword: async ({ user, token }) => {
-      console.log(`Reset password token for ${user.email}: ${token}`);
-
       await sendEmail({
         to: user.email,
         subject: "Reset your password",
@@ -27,15 +27,11 @@ export const auth = betterAuth({
     },
   },
   emailVerification: {
-    sendVerificationEmail: async ({ user, token, url }) => {
-      const [, redirectUrl] = url.split("&callbackURL=");
-      const URL = `${env.BETTER_AUTH_URL}/api/v1/auth/verify-email?token=${token}&redirectUrl=${redirectUrl}`;
-      console.log(`Verification token for ${user.email}: ${URL}`);
-
+    sendVerificationEmail: async ({ user, url }) => {
       await sendEmail({
         to: user.email,
         subject: "Verify your email",
-        text: `Click this link to verify your email: ${URL}`,
+        text: `Click this link to verify your email: ${url}`,
       });
     },
   },

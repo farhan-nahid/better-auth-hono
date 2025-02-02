@@ -17,12 +17,15 @@ const EnvSchema = z
   .object({
     NODE_ENV: z.string().default("development"),
     PORT: z.coerce.number().default(9999),
+    BETTER_AUTH_SECRET: z.string(),
     SMTP_SERVICE: z.string(),
     SMTP_HOST: z.string(),
     SMTP_PORT: z.coerce.number(),
     SMTP_USER: z.string(),
     SMTP_PASSWORD: z.string(),
     BETTER_AUTH_URL: z.string().url(),
+    FRONTEND_URL: z.string().url(),
+    DATABASE_URL: z.string().url(),
     LOG_LEVEL: z.enum([
       "fatal",
       "error",
@@ -32,19 +35,6 @@ const EnvSchema = z
       "trace",
       "silent",
     ]),
-    DATABASE_URL: z.string().url(),
-    DATABASE_AUTH_TOKEN: z.string().optional(),
-  })
-  .superRefine((input, ctx) => {
-    if (input.NODE_ENV === "production" && !input.DATABASE_AUTH_TOKEN) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.invalid_type,
-        expected: "string",
-        received: "undefined",
-        path: ["DATABASE_AUTH_TOKEN"],
-        message: "Must be set when NODE_ENV is 'production'",
-      });
-    }
   });
 
 export type env = z.infer<typeof EnvSchema>;
