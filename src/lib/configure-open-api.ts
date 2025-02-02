@@ -1,5 +1,7 @@
 import { apiReference } from "@scalar/hono-api-reference";
 
+import env from "@/env";
+
 import type { AppOpenAPI } from "./types";
 
 import PackageJSON from "../../package.json";
@@ -20,11 +22,11 @@ export function configureOpenApi(app: AppOpenAPI) {
       layout: "classic",
       servers: [
         {
-          url: "http://localhost:9999",
+          url: `http://localhost:${env.PORT}`,
           description: "Development server",
         },
         {
-          url: "http://localhost:9999",
+          url: `http://localhost:${env.PORT}`,
           description: "Production server",
         },
       ],

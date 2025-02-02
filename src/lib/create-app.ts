@@ -11,7 +11,7 @@ function createRouter() {
 
 function createApp() {
   const app = createRouter();
-  app.use(serveEmojiFavicon("📝"));
+  app.use(serveEmojiFavicon("🔐"));
   app.use(pinoLogger());
 
   app.notFound(notFound);
