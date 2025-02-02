@@ -4,9 +4,10 @@ import * as handlers from "./auth.handlers";
 import * as routes from "./auth.routes";
 
 const router = createRouter()
-  .openapi(routes.signIn, handlers.signIn)
   .openapi(routes.signUp, handlers.signUp)
-  // .openapi(routes.update, handlers.update)
-  // .openapi(routes.deleted, handlers.deleted);
+  .openapi(routes.signIn, handlers.signIn)
+  .openapi(routes.verifyEmail, handlers.verifyEmail)
+  .openapi(routes.forgetPassword, handlers.forgetPassword)
+  .openapi(routes.resetPassword, handlers.resetPassword);
 
 export default router;

@@ -18,4 +18,17 @@ const SignOutSchema = z.object({
   userId: z.string(),
 });
 
-export { SignInSchema, SignOutSchema, SignUpSchema };
+const ForgetPasswordSchema = z.object({
+  email: z.string(),
+});
+
+const ResetPasswordSchema = z.object({
+  newPassword: z.string(),
+  token: z.string(),
+});
+
+const VerifyEmailSchema = z.object({
+  token: z.string(),
+});
+
+export { ForgetPasswordSchema, ResetPasswordSchema, SignInSchema, SignOutSchema, SignUpSchema, VerifyEmailSchema };

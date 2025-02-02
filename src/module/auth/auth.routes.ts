@@ -4,7 +4,7 @@ import { httpStatusCodes } from "@/constants";
 import { jsonContent, jsonContentRequired } from "@/openapi/helpers";
 import { createMessageObjectSchema } from "@/openapi/schemas";
 
-import { SignInSchema, SignOutSchema, SignUpSchema } from "./auth.schema";
+import { ForgetPasswordSchema, ResetPasswordSchema, SignInSchema, SignOutSchema, SignUpSchema, VerifyEmailSchema } from "./auth.schema";
 
 const tags = ["Auth"];
 
@@ -60,8 +60,65 @@ const signOut = createRoute({
   },
 });
 
-export type SignInRoute = typeof signIn;
-export type SignUpRoute = typeof signUp;
-export type SignOutRoute = typeof signOut;
+const resetPassword = createRoute({
+  tags,
+  method: "post",
+  path: "/auth/reset-password",
+  summary: "Reset password",
+  description: "Reset password",
+  request: {
+    body: jsonContentRequired(ResetPasswordSchema, "Reset password"),
+  },
+  responses: {
+    [httpStatusCodes.OK]: jsonContent(
+      createMessageObjectSchema("Password reset successful"),
+      "Password reset successful",
+    ),
+  },
+});
 
-export { signIn, signOut, signUp };
+const forgetPassword = createRoute({
+  tags,
+  method: "post",
+  path: "/auth/forget-password",
+  summary: "Forget password",
+  description: "Forget password",
+  request: {
+    body: jsonContentRequired(ForgetPasswordSchema, "Forget password"),
+  },
+  responses: {
+    [httpStatusCodes.OK]: jsonContent(
+      createMessageObjectSchema("Email sent"),
+      "Email sent",
+    ),
+  },
+});
+
+const verifyEmail = createRoute({
+  tags,
+  method: "post",
+  path: "/auth/verify-email",
+  summary: "Verify email",
+  description: "Verify email",
+  request: {
+    body: jsonContentRequired(VerifyEmailSchema, "Verify email"),
+  },
+  responses: {
+    [httpStatusCodes.OK]: jsonContent(
+      createMessageObjectSchema("Email verified"),
+      "Email verified",
+    ),
+  },
+});
+
+type SignInRoute = typeof signIn;
+type SignUpRoute = typeof signUp;
+type SignOutRoute = typeof signOut;
+type VerifyEmailRoute = typeof verifyEmail;
+type ResetPasswordRoute = typeof resetPassword;
+type ForgetPasswordRoute = typeof forgetPassword;
+
+export type { ForgetPasswordRoute, ResetPasswordRoute, SignInRoute, SignOutRoute, SignUpRoute, VerifyEmailRoute };
+
+  export { forgetPassword, resetPassword, signIn, signOut, signUp, verifyEmail };
+
