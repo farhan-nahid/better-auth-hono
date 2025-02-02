@@ -2,7 +2,7 @@ import type { AppRouteHandler } from "@/lib/types";
 
 import { auth } from "@/auth";
 
-import type { ForgetPasswordRoute, ResetPasswordRoute, SignInRoute, SignUpRoute, VerifyEmailRoute } from "./auth.routes";
+import type { ForgetPasswordRoute, ResetPasswordRoute, SignInRoute, SignUpRoute, VerifyEmailGetRoute, VerifyEmailRoute } from "./auth.routes";
 
 const signIn: AppRouteHandler<SignInRoute> = async (c) => {
   const { email, password, rememberMe, callbackURL } = c.req.valid("json");
@@ -14,9 +14,9 @@ const signIn: AppRouteHandler<SignInRoute> = async (c) => {
 
 const signUp: AppRouteHandler<SignUpRoute> = async (c) => {
   const { email, password, name, image } = c.req.valid("json");
-  const user = await auth.api.signUpEmail({ body: { email, password, name, image }, asResponse: true });
+  await auth.api.signUpEmail({ body: { email, password, name, image }, asResponse: true });
 
-  return c.json({ message: "Sign up successful", user });
+  return c.json({ message: "Sign up successful" });
 };
 
 // const signOut: AppRouteHandler<SignOutRoute> = async (c) => {
@@ -44,4 +44,10 @@ const verifyEmail: AppRouteHandler<VerifyEmailRoute> = async (c) => {
   return c.json({ message: "Email verified" });
 };
 
-export { forgetPassword, resetPassword, signIn, signUp, verifyEmail };
+const verifyEmailGet: AppRouteHandler<VerifyEmailGetRoute> = async (c) => {
+  const { token , redirectUrl} = c.req.valid("query");
+  await auth.api.verifyEmail({ query: { token } });
+  return c.json({ message: "Email verified", redirectUrl });
+};
+
+export { forgetPassword, resetPassword, signIn, signUp, verifyEmail, verifyEmailGet };

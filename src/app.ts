@@ -10,15 +10,15 @@ const app = createApp();
 configureOpenApi(app);
 
 const routes = [index, auth] as const;
-// app.on(["POST", "GET"], "/api/auth/**", c => auth.handler(c.req.raw));
-routes.forEach(route => app.route("/", route));
+
+routes.forEach(route => app.route("/api/v1", route));
 
 export type AppType = typeof routes[number];
 
 export { app };
 
 app.use(
-  "/api/auth/**", // or replace with "*" to enable cors for all routes
+  "/api/v1/auth/**", // or replace with "*" to enable cors for all routes
   cors({
     origin: "http://localhost:3001", // replace with your origin
     allowHeaders: ["Content-Type", "Authorization"],

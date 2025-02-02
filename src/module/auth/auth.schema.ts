@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "@hono/zod-openapi";
 
 const SignInSchema = z.object({
   email: z.string(),
@@ -31,4 +31,9 @@ const VerifyEmailSchema = z.object({
   token: z.string(),
 });
 
-export { ForgetPasswordSchema, ResetPasswordSchema, SignInSchema, SignOutSchema, SignUpSchema, VerifyEmailSchema };
+const VerifyEmailGetSchema = z.object({
+  token: z.string(),
+  redirectUrl: z.string(),
+});
+
+export { ForgetPasswordSchema, ResetPasswordSchema, SignInSchema, SignOutSchema, SignUpSchema, VerifyEmailGetSchema, VerifyEmailSchema };

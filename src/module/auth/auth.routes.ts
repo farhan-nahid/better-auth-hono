@@ -4,7 +4,7 @@ import { httpStatusCodes } from "@/constants";
 import { jsonContent, jsonContentRequired } from "@/openapi/helpers";
 import { createMessageObjectSchema } from "@/openapi/schemas";
 
-import { ForgetPasswordSchema, ResetPasswordSchema, SignInSchema, SignOutSchema, SignUpSchema, VerifyEmailSchema } from "./auth.schema";
+import { ForgetPasswordSchema, ResetPasswordSchema, SignInSchema, SignOutSchema, SignUpSchema, VerifyEmailGetSchema, VerifyEmailSchema } from "./auth.schema";
 
 const tags = ["Auth"];
 
@@ -111,14 +111,32 @@ const verifyEmail = createRoute({
   },
 });
 
+const verifyEmailGet = createRoute({
+  tags,
+  method: "get",
+  path: "/auth/verify-email",
+  summary: "Verify email",
+  description: "Verify email",
+  request: {
+    query: VerifyEmailGetSchema,
+  },
+  responses: {
+    [httpStatusCodes.OK]: jsonContent(
+      createMessageObjectSchema("Email verified"),
+      "Email verified",
+    ),
+  },
+});
+
 type SignInRoute = typeof signIn;
 type SignUpRoute = typeof signUp;
 type SignOutRoute = typeof signOut;
 type VerifyEmailRoute = typeof verifyEmail;
 type ResetPasswordRoute = typeof resetPassword;
 type ForgetPasswordRoute = typeof forgetPassword;
+type VerifyEmailGetRoute = typeof verifyEmailGet;
 
-export type { ForgetPasswordRoute, ResetPasswordRoute, SignInRoute, SignOutRoute, SignUpRoute, VerifyEmailRoute };
+export type { ForgetPasswordRoute, ResetPasswordRoute, SignInRoute, SignOutRoute, SignUpRoute, VerifyEmailGetRoute, VerifyEmailRoute };
 
-  export { forgetPassword, resetPassword, signIn, signOut, signUp, verifyEmail };
+  export { forgetPassword, resetPassword, signIn, signOut, signUp, verifyEmail, verifyEmailGet };
 

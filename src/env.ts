@@ -17,6 +17,12 @@ const EnvSchema = z
   .object({
     NODE_ENV: z.string().default("development"),
     PORT: z.coerce.number().default(9999),
+    SMTP_SERVICE: z.string(),
+    SMTP_HOST: z.string(),
+    SMTP_PORT: z.coerce.number(),
+    SMTP_USER: z.string(),
+    SMTP_PASSWORD: z.string(),
+    BETTER_AUTH_URL: z.string().url(),
     LOG_LEVEL: z.enum([
       "fatal",
       "error",
