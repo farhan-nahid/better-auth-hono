@@ -25,6 +25,8 @@ const EnvSchema = z
     SMTP_PASSWORD: z.string(),
     BETTER_AUTH_URL: z.string().url(),
     FRONTEND_URL: z.string().url(),
+    GOOGLE_CLIENT_ID: z.string(),
+    GOOGLE_CLIENT_SECRET: z.string(),
     DATABASE_URL: z.string().url(),
     LOG_LEVEL: z.enum([
       "fatal",

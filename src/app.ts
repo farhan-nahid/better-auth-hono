@@ -1,15 +1,20 @@
 import { cors } from "hono/cors";
 
+import { auth as authServer } from "@/auth";
 import env from "@/env";
-import { configureOpenApi } from "@/lib/configure-open-api";
+// import { configureOpenApi } from "@/lib/configure-open-api";
 import { createApp } from "@/lib/create-app";
-import auth from "@/module/auth/auth.index";
+// import auth from "@/module/auth/auth.index";
 import index from "@/module/index.route";
 
 const app = createApp();
-configureOpenApi(app);
+// configureOpenApi(app);
 
-const routes = [index, auth] as const;
+const routes = [index] as const;
+
+app.on(["POST", "GET"], "/api/v1/auth/**", (c) => {
+  return authServer.handler(c.req.raw);
+});
 
 routes.forEach(route => app.route("/api/v1", route));
 
@@ -24,6 +29,9 @@ app.use(
     credentials: true,
   }),
 );
+
+// const openAPISchema = await authServer.api.generateOpenAPISchema();
+// console.log(openAPISchema);
 
 export type AppType = typeof routes[number];
 

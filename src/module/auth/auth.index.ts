@@ -7,6 +7,7 @@ const router = createRouter()
   .openapi(routes.signUp, handlers.signUp)
   .openapi(routes.signIn, handlers.signIn)
   .openapi(routes.verifyEmail, handlers.verifyEmail)
+  .openapi(routes.signInGoogle, handlers.signInGoogle)
   .openapi(routes.verifyEmailGet, handlers.verifyEmailGet)
   .openapi(routes.forgetPassword, handlers.forgetPassword)
   .openapi(routes.resetPassword, handlers.resetPassword);

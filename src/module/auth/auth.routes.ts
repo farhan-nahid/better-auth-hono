@@ -25,6 +25,23 @@ const signIn = createRoute({
   },
 });
 
+const signInGoogle = createRoute({
+  tags,
+  method: "post",
+  path: "/auth/sign-in-google",
+  summary: "Sign in with Google",
+  description: "Sign in with Google",
+  request: {
+    // body: jsonContentRequired(SignInSchema, "Sign in with Google"),
+  },
+  responses: {
+    [httpStatusCodes.OK]: jsonContent(
+      createMessageObjectSchema("Sign in successful"),
+      "Sign in successful",
+    ),
+  },
+});
+
 const signUp = createRoute({
   tags,
   method: "post",
@@ -132,11 +149,12 @@ type SignInRoute = typeof signIn;
 type SignUpRoute = typeof signUp;
 type SignOutRoute = typeof signOut;
 type VerifyEmailRoute = typeof verifyEmail;
+type SignInGoogleRoute = typeof signInGoogle;
 type ResetPasswordRoute = typeof resetPassword;
 type ForgetPasswordRoute = typeof forgetPassword;
 type VerifyEmailGetRoute = typeof verifyEmailGet;
 
-export type { ForgetPasswordRoute, ResetPasswordRoute, SignInRoute, SignOutRoute, SignUpRoute, VerifyEmailGetRoute, VerifyEmailRoute };
+export type { ForgetPasswordRoute, ResetPasswordRoute, SignInGoogleRoute, SignInRoute, SignOutRoute, SignUpRoute, VerifyEmailGetRoute, VerifyEmailRoute };
 
-  export { forgetPassword, resetPassword, signIn, signOut, signUp, verifyEmail, verifyEmailGet };
+  export { forgetPassword, resetPassword, signIn, signInGoogle, signOut, signUp, verifyEmail, verifyEmailGet };
 
