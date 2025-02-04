@@ -12,13 +12,14 @@ export const auth = betterAuth({
   baseURL: env.BETTER_AUTH_URL,
   basePath: "/api/v1/auth",
   database: prismaAdapter(prisma, { provider: "postgresql" }),
+  trustedOrigins: [env.FRONTEND_URL, env.BETTER_AUTH_URL],
   emailAndPassword: {
     enabled: true,
     autoSignIn: false,
     requireEmailVerification: true,
     minPasswordLength: 8,
     maxPasswordLength: 20,
-    resetPasswordTokenExpiresIn: 60,
+    resetPasswordTokenExpiresIn: 86400, // 86400 seconds (1 day)
     sendResetPassword: async ({ user, token }) => {
       await sendEmail({
         to: user.email,
@@ -35,6 +36,8 @@ export const auth = betterAuth({
         text: `Click this link to verify your email: ${url}`,
       });
     },
+    sendOnSignUp: true,
+    expiresIn: 86400, // 86400 seconds (1 day)
   },
   socialProviders: {
     google: {
@@ -42,6 +45,18 @@ export const auth = betterAuth({
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     },
   },
+  user: {
+    additionalFields: {
+      lastName: { type: "string", required: true },
+      phoneNumber: { type: "string", required: true },
+      companyName: { type: "string", required: true },
+      companyAddress: { type: "string", required: true },
+      country: { type: "string", required: true },
+      avatar: { type: "string", required: true },
+      role: { type: "string", required: true, defaultValue: "USER" },
+    },
+  },
+
   plugins: [
     openAPI(),
   ],

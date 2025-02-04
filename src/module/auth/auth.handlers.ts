@@ -23,8 +23,8 @@ const signInGoogle: AppRouteHandler<SignInGoogleRoute> = async (c) => {
 };
 
 const signUp: AppRouteHandler<SignUpRoute> = async (c) => {
-  const { email, password, name, image } = c.req.valid("json");
-  await auth.api.signUpEmail({ body: { email, password, name, image }, asResponse: true });
+  const data = c.req.valid("json");
+  await auth.api.signUpEmail({ body: { ...data }, asResponse: true });
 
   return c.json({ message: "Sign up successful" });
 };
