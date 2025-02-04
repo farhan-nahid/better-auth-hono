@@ -1,10 +1,10 @@
-import { createRoute } from "@hono/zod-openapi";
+import { createRoute, z } from "@hono/zod-openapi";
 
 import { httpStatusCodes } from "@/constants";
 import { jsonContent, jsonContentRequired } from "@/openapi/helpers";
 import { createMessageObjectSchema } from "@/openapi/schemas";
 
-import { ForgetPasswordSchema, ResetPasswordSchema, SignInSchema, SignOutSchema, SignUpSchema, VerifyEmailGetSchema, VerifyEmailSchema } from "./auth.schema";
+import { ForgetPasswordSchema, ResetPasswordSchema, SignInSchema, SignOutSchema, SignUpSchema, VerifyEmailSchema } from "./auth.schema";
 
 const tags = ["Auth"];
 
@@ -15,13 +15,27 @@ const signIn = createRoute({
   summary: "Sign in",
   description: "Sign in to the application",
   request: {
-    body: jsonContentRequired(SignInSchema, "Sign in"),
+    body: {
+      description: "Sign in to the application",
+      content: {
+        "application/json": {
+          schema: SignInSchema,
+        },
+      },
+    },
   },
   responses: {
-    [httpStatusCodes.OK]: jsonContent(
-      createMessageObjectSchema("Sign in successful"),
-      "Sign in successful",
-    ),
+    [httpStatusCodes.OK]: {
+      description: "Sign in successful",
+      content: {
+        "application/json": {
+          schema: z.object({
+            message: z.string(),
+            token: z.string(),
+          }),
+        },
+      },
+    },
   },
 });
 
@@ -49,7 +63,14 @@ const signUp = createRoute({
   summary: "Sign up",
   description: "Sign up to the application",
   request: {
-    body: jsonContentRequired(SignUpSchema, "Sign up"),
+    body: {
+      description: "Sign up to the application",
+      content: {
+        "application/json": {
+          schema: SignUpSchema,
+        },
+      },
+    },
   },
   responses: {
     [httpStatusCodes.OK]: jsonContent(
@@ -113,29 +134,12 @@ const forgetPassword = createRoute({
 
 const verifyEmail = createRoute({
   tags,
-  method: "post",
-  path: "/auth/verify-email",
-  summary: "Verify email",
-  description: "Verify email",
-  request: {
-    body: jsonContentRequired(VerifyEmailSchema, "Verify email"),
-  },
-  responses: {
-    [httpStatusCodes.OK]: jsonContent(
-      createMessageObjectSchema("Email verified"),
-      "Email verified",
-    ),
-  },
-});
-
-const verifyEmailGet = createRoute({
-  tags,
   method: "get",
   path: "/auth/verify-email",
   summary: "Verify email",
   description: "Verify email",
   request: {
-    query: VerifyEmailGetSchema,
+    query: VerifyEmailSchema,
   },
   responses: {
     [httpStatusCodes.OK]: jsonContent(
@@ -152,9 +156,8 @@ type VerifyEmailRoute = typeof verifyEmail;
 type SignInGoogleRoute = typeof signInGoogle;
 type ResetPasswordRoute = typeof resetPassword;
 type ForgetPasswordRoute = typeof forgetPassword;
-type VerifyEmailGetRoute = typeof verifyEmailGet;
 
-export type { ForgetPasswordRoute, ResetPasswordRoute, SignInGoogleRoute, SignInRoute, SignOutRoute, SignUpRoute, VerifyEmailGetRoute, VerifyEmailRoute };
+export type { ForgetPasswordRoute, ResetPasswordRoute, SignInGoogleRoute, SignInRoute, SignOutRoute, SignUpRoute, VerifyEmailRoute };
 
-  export { forgetPassword, resetPassword, signIn, signInGoogle, signOut, signUp, verifyEmail, verifyEmailGet };
+  export { forgetPassword, resetPassword, signIn, signInGoogle, signOut, signUp, verifyEmail };
 

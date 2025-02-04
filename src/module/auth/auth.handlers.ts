@@ -2,14 +2,14 @@ import type { AppRouteHandler } from "@/lib/types";
 
 import { auth } from "@/auth";
 
-import type { ForgetPasswordRoute, ResetPasswordRoute, SignInGoogleRoute, SignInRoute, SignUpRoute, VerifyEmailGetRoute, VerifyEmailRoute } from "./auth.routes";
+import type { ForgetPasswordRoute, ResetPasswordRoute, SignInGoogleRoute, SignInRoute, SignUpRoute, VerifyEmailRoute } from "./auth.routes";
 
 const signIn: AppRouteHandler<SignInRoute> = async (c) => {
   const { email, password, rememberMe, callbackURL } = c.req.valid("json");
   const payload = { email, password, rememberMe, callbackURL };
   const user = await auth.api.signInEmail({ body: payload });
-
-  return c.json({ message: "Sign in successful", user: user?.user });
+  const session = await auth.api.getToken({ headers: new Headers({ Authorization: `Bearer ${user?.token}` }) });
+  return c.json({ message: "Sign in successful", token: session?.token });
 };
 
 const signInGoogle: AppRouteHandler<SignInGoogleRoute> = async (c) => {
@@ -49,15 +49,9 @@ const resetPassword: AppRouteHandler<ResetPasswordRoute> = async (c) => {
 };
 
 const verifyEmail: AppRouteHandler<VerifyEmailRoute> = async (c) => {
-  const { token } = c.req.valid("json");
+  const { token, callbackURL } = c.req.valid("query");
   await auth.api.verifyEmail({ query: { token } });
-  return c.json({ message: "Email verified" });
+  return c.json({ message: "Email verified", callbackURL });
 };
 
-const verifyEmailGet: AppRouteHandler<VerifyEmailGetRoute> = async (c) => {
-  const { token, redirectUrl } = c.req.valid("query");
-  await auth.api.verifyEmail({ query: { token } });
-  return c.json({ message: "Email verified", redirectUrl });
-};
-
-export { forgetPassword, resetPassword, signIn, signInGoogle, signUp, verifyEmail, verifyEmailGet };
+export { forgetPassword, resetPassword, signIn, signInGoogle, signUp, verifyEmail };

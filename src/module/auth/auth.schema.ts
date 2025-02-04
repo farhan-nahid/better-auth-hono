@@ -36,11 +36,7 @@ const ResetPasswordSchema = z.object({
 
 const VerifyEmailSchema = z.object({
   token: z.string(),
+  callbackURL: z.string(),
 });
 
-const VerifyEmailGetSchema = z.object({
-  token: z.string(),
-  redirectUrl: z.string(),
-});
-
-export { ForgetPasswordSchema, ResetPasswordSchema, SignInSchema, SignOutSchema, SignUpSchema, VerifyEmailGetSchema, VerifyEmailSchema };
+export { ForgetPasswordSchema, ResetPasswordSchema, SignInSchema, SignOutSchema, SignUpSchema, VerifyEmailSchema };
