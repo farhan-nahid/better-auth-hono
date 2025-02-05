@@ -2,7 +2,7 @@ import type { AppRouteHandler } from "@/lib/types";
 
 import { auth } from "@/auth";
 
-import type { ForgetPasswordRoute, ResetPasswordRoute, SignInGoogleRoute, SignInRoute, SignUpRoute, VerifyEmailRoute } from "./auth.routes";
+import type { ForgetPasswordRoute, JwksRoute, ResetPasswordRoute, SignInGoogleRoute, SignInRoute, SignUpRoute, VerifyEmailRoute } from "./auth.routes";
 
 const signIn: AppRouteHandler<SignInRoute> = async (c) => {
   const { email, password, rememberMe, callbackURL } = c.req.valid("json");
@@ -24,7 +24,7 @@ const signInGoogle: AppRouteHandler<SignInGoogleRoute> = async (c) => {
 
 const signUp: AppRouteHandler<SignUpRoute> = async (c) => {
   const data = c.req.valid("json");
-  await auth.api.signUpEmail({ body: { ...data }, asResponse: true });
+  await auth.api.signUpEmail({ body: { ...data } });
 
   return c.json({ message: "Sign up successful" });
 };
@@ -50,8 +50,13 @@ const resetPassword: AppRouteHandler<ResetPasswordRoute> = async (c) => {
 
 const verifyEmail: AppRouteHandler<VerifyEmailRoute> = async (c) => {
   const { token, callbackURL } = c.req.valid("query");
-  await auth.api.verifyEmail({ query: { token } });
-  return c.json({ message: "Email verified", callbackURL });
+  const response = await auth.api.verifyEmail({ query: { token } });
+  return c.json({ message: "Email verified", callbackURL, response });
 };
 
-export { forgetPassword, resetPassword, signIn, signInGoogle, signUp, verifyEmail };
+const jwks: AppRouteHandler<JwksRoute> = async (c) => {
+  const jwks = await auth.api.getJwks();
+  return c.json(jwks);
+};
+
+export { forgetPassword, jwks, resetPassword, signIn, signInGoogle, signUp, verifyEmail };

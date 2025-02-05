@@ -149,6 +149,29 @@ const verifyEmail = createRoute({
   },
 });
 
+const jwks = createRoute({
+  tags,
+  method: "get",
+  path: "/auth/jwks",
+  summary: "Get JWKS",
+  description: "Get JWKS",
+  responses: {
+    [httpStatusCodes.OK]: jsonContent(
+      z.object({
+        keys: z.array(
+          z.object({
+            crv: z.string(),
+            x: z.string(),
+            kty: z.string(),
+            kid: z.string(),
+          }),
+        ),
+      }),
+      "JWKS",
+    ),
+  },
+});
+
 type SignInRoute = typeof signIn;
 type SignUpRoute = typeof signUp;
 type SignOutRoute = typeof signOut;
@@ -156,8 +179,9 @@ type VerifyEmailRoute = typeof verifyEmail;
 type SignInGoogleRoute = typeof signInGoogle;
 type ResetPasswordRoute = typeof resetPassword;
 type ForgetPasswordRoute = typeof forgetPassword;
+type JwksRoute = typeof jwks;
 
-export type { ForgetPasswordRoute, ResetPasswordRoute, SignInGoogleRoute, SignInRoute, SignOutRoute, SignUpRoute, VerifyEmailRoute };
+export type { ForgetPasswordRoute, JwksRoute, ResetPasswordRoute, SignInGoogleRoute, SignInRoute, SignOutRoute, SignUpRoute, VerifyEmailRoute };
 
-  export { forgetPassword, resetPassword, signIn, signInGoogle, signOut, signUp, verifyEmail };
+  export { forgetPassword, jwks, resetPassword, signIn, signInGoogle, signOut, signUp, verifyEmail };
 

@@ -37,6 +37,7 @@ export const auth = betterAuth({
       });
     },
     sendOnSignUp: true,
+    autoSignInAfterVerification: true,
     expiresIn: 86400, // 86400 seconds (1 day)
   },
   socialProviders: {

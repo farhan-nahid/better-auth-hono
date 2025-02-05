@@ -9,6 +9,7 @@ const router = createRouter()
   .openapi(routes.verifyEmail, handlers.verifyEmail)
   .openapi(routes.signInGoogle, handlers.signInGoogle)
   .openapi(routes.forgetPassword, handlers.forgetPassword)
-  .openapi(routes.resetPassword, handlers.resetPassword);
+  .openapi(routes.resetPassword, handlers.resetPassword)
+  .openapi(routes.jwks, handlers.jwks);
 
 export default router;
