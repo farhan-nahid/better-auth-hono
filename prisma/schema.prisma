@@ -34,6 +34,9 @@ model User {
 
   avatar String
 
+  twoFactorEnabled Boolean?
+  twofactors       TwoFactor[]
+
   @@unique([email])
   @@map("user")
 }
@@ -90,4 +93,14 @@ model Jwks {
   createdAt  DateTime
 
   @@map("jwks")
+}
+
+model TwoFactor {
+  id          String @id
+  secret      String
+  backupCodes String
+  userId      String
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("twoFactor")
 }

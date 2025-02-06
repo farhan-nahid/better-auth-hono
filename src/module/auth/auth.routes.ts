@@ -4,7 +4,7 @@ import { httpStatusCodes } from "@/constants";
 import { jsonContent, jsonContentRequired } from "@/openapi/helpers";
 import { createMessageObjectSchema } from "@/openapi/schemas";
 
-import { ForgetPasswordSchema, ResetPasswordSchema, SignInSchema, SignOutSchema, SignUpSchema, VerifyEmailSchema } from "./auth.schema";
+import { ForgetPasswordSchema, ResetPasswordSchema, SignInSchema, SignOutSchema, SignUpSchema, TwoFactorEnableSchema, VerifyEmailSchema } from "./auth.schema";
 
 const tags = ["Auth"];
 
@@ -149,6 +149,39 @@ const verifyEmail = createRoute({
   },
 });
 
+const twoFactorEnable = createRoute({
+  tags,
+  method: "post",
+  path: "/auth/two-factor/enable",
+  summary: "Enable two factor",
+  description: "Enable two factor",
+  request: {
+    // headers: z.object({
+    //   Authorization: z.string().describe("Bearer token"),
+    // }),
+    body: {
+      description: "Enable two factor",
+      content: {
+        "application/json": {
+          schema: TwoFactorEnableSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    [httpStatusCodes.OK]: {
+      description: "Two factor enabled",
+      content: {
+        "application/json": {
+          schema: z.object({
+            message: z.string(),
+          }),
+        },
+      },
+    },
+  },
+});
+
 const jwks = createRoute({
   tags,
   method: "get",
@@ -180,8 +213,9 @@ type SignInGoogleRoute = typeof signInGoogle;
 type ResetPasswordRoute = typeof resetPassword;
 type ForgetPasswordRoute = typeof forgetPassword;
 type JwksRoute = typeof jwks;
+type TwoFactorEnableRoute = typeof twoFactorEnable;
 
-export type { ForgetPasswordRoute, JwksRoute, ResetPasswordRoute, SignInGoogleRoute, SignInRoute, SignOutRoute, SignUpRoute, VerifyEmailRoute };
+export type { ForgetPasswordRoute, JwksRoute, ResetPasswordRoute, SignInGoogleRoute, SignInRoute, SignOutRoute, SignUpRoute, TwoFactorEnableRoute, VerifyEmailRoute };
 
-  export { forgetPassword, jwks, resetPassword, signIn, signInGoogle, signOut, signUp, verifyEmail };
+  export { forgetPassword, jwks, resetPassword, signIn, signInGoogle, signOut, signUp, twoFactorEnable, verifyEmail };
 

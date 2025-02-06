@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { bearer, jwt } from "better-auth/plugins";
+import { bearer, jwt, openAPI, twoFactor } from "better-auth/plugins";
 
 import { prisma } from "@/lib/prisma-db";
 import sendEmail from "@/nodemailer";
@@ -44,6 +44,7 @@ export const auth = betterAuth({
     google: {
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
+      redirectURI: `${env.BETTER_AUTH_URL}/api/v1/auth/callback/google`,
     },
   },
   user: {
@@ -59,7 +60,12 @@ export const auth = betterAuth({
   },
 
   plugins: [
+    openAPI(),
     jwt(),
     bearer(),
+    twoFactor(),
+    // validator([
+    //   { path: "/sign-up/email", adapter: ZodAdapter(SignUpSchema) },
+    // ]),
   ],
 });

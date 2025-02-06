@@ -39,4 +39,8 @@ const VerifyEmailSchema = z.object({
   callbackURL: z.string(),
 });
 
-export { ForgetPasswordSchema, ResetPasswordSchema, SignInSchema, SignOutSchema, SignUpSchema, VerifyEmailSchema };
+const TwoFactorEnableSchema = z.object({
+  password: z.string(),
+});
+
+export { ForgetPasswordSchema, ResetPasswordSchema, SignInSchema, SignOutSchema, SignUpSchema, TwoFactorEnableSchema, VerifyEmailSchema };
