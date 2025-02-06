@@ -1,11 +1,13 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { bearer, jwt, openAPI, twoFactor } from "better-auth/plugins";
+import { validator, ZodAdapter } from "validation-better-auth";
 
 import { prisma } from "@/lib/prisma-db";
 import sendEmail from "@/nodemailer";
 
 import env from "./env";
+import { SignUpSchema } from "./module/auth/auth.schema";
 
 export const auth = betterAuth({
   appName: "better_auth_hono",
@@ -15,7 +17,7 @@ export const auth = betterAuth({
   trustedOrigins: [env.FRONTEND_URL, env.BETTER_AUTH_URL],
   emailAndPassword: {
     enabled: true,
-    autoSignIn: false,
+    autoSignIn: true,
     requireEmailVerification: true,
     minPasswordLength: 8,
     maxPasswordLength: 20,
@@ -24,16 +26,18 @@ export const auth = betterAuth({
       await sendEmail({
         to: user.email,
         subject: "Reset your password",
-        text: `Your reset password token is: ${token}`,
+        html: `Your reset password token is: ${token}`,
       });
     },
   },
   emailVerification: {
-    sendVerificationEmail: async ({ user, url }) => {
+    sendVerificationEmail: async ({ user, token }) => {
+      const url = `${env.FRONTEND_URL}/verify-email?token=${token}&callbackURL=/dashboard`;
+
       await sendEmail({
         to: user.email,
         subject: "Verify your email",
-        text: `Click this link to verify your email: ${url}`,
+        html: `Click this link to verify your email: <a href="${url}">Verify Your Email</a>`,
       });
     },
     sendOnSignUp: true,
@@ -45,10 +49,22 @@ export const auth = betterAuth({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
       redirectURI: `${env.BETTER_AUTH_URL}/api/v1/auth/callback/google`,
+      mapProfileToUser: (profile) => {
+        return {
+          firstName: profile?.given_name,
+          lastName: profile?.family_name,
+        };
+      },
+    },
+  },
+  account: {
+    accountLinking: {
+      trustedProviders: ["google"],
     },
   },
   user: {
     additionalFields: {
+      firstName: { type: "string", required: true },
       lastName: { type: "string", required: true },
       phoneNumber: { type: "string", required: true },
       companyName: { type: "string", required: true },
@@ -64,8 +80,8 @@ export const auth = betterAuth({
     jwt(),
     bearer(),
     twoFactor(),
-    // validator([
-    //   { path: "/sign-up/email", adapter: ZodAdapter(SignUpSchema) },
-    // ]),
+    validator([
+      { path: "/sign-up/email", adapter: ZodAdapter(SignUpSchema) },
+    ]),
   ],
 });

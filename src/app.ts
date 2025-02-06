@@ -1,19 +1,25 @@
 import { cors } from "hono/cors";
 
 import { auth } from "@/auth";
-import env from "@/env";
 import { createApp } from "@/lib/create-app";
+// import authRoute from "@/module/auth/auth.index";
 import index from "@/module/index.route";
 
+import env from "./env";
+import { configureOpenApi } from "./lib/configure-open-api";
+
 const app = createApp();
-
-const routes = [index] as const;
-
-routes.forEach(route => app.route("/api/v1", route));
-
-app.on(["POST", "GET"], "/api/v1/auth/*", (c) => {
-  return auth.handler(c.req.raw);
-});
+app.use(
+  "/api/v1/auth/*",
+  cors({
+    origin: [env.FRONTEND_URL, env.BETTER_AUTH_URL],
+    allowHeaders: ["Content-Type", "Authorization"],
+    allowMethods: ["POST", "GET", "OPTIONS"],
+    exposeHeaders: ["Content-Length"],
+    maxAge: 600,
+    credentials: true,
+  }),
+);
 
 app.use("/api/v1/auth/*", async (c, next) => {
   const session = await auth.api.getSession({ headers: c.req.raw.headers });
@@ -29,19 +35,17 @@ app.use("/api/v1/auth/*", async (c, next) => {
   return next();
 });
 
-app.use(
-  "/api/v1/auth/*", // or replace with "*" to enable cors for all routes
-  cors({
-    origin: [env.BETTER_AUTH_URL, env.FRONTEND_URL], // replace with your origin
-    allowHeaders: ["Content-Type", "Authorization"],
-    allowMethods: ["POST", "GET", "OPTIONS"],
-    exposeHeaders: ["Content-Length"],
-    maxAge: 600,
-    credentials: true,
-  }),
-);
+configureOpenApi(app);
 
-app.get("/session", async (c) => {
+const routes = [index] as const;
+
+routes.forEach(route => app.route("/api/v1", route));
+
+app.on(["POST", "GET"], "/api/v1/auth/*", (c) => {
+  return auth.handler(c.req.raw);
+});
+
+app.get("/api/v1/session", async (c) => {
   const session = c.get("session");
   const user = c.get("user");
 

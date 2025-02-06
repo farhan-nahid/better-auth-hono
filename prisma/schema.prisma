@@ -14,27 +14,24 @@ datasource db {
 }
 
 model User {
-  id            String    @id
-  name          String
-  email         String
-  emailVerified Boolean
-  image         String?
-  createdAt     DateTime
-  updatedAt     DateTime
-  sessions      Session[]
-  accounts      Account[]
-
-  lastName       String
-  phoneNumber    String
-  companyName    String
-  companyAddress String
-  country        String
-
-  role String
-
-  avatar String
-
+  id               String      @id
+  name             String
+  email            String
+  emailVerified    Boolean
+  image            String?
+  createdAt        DateTime
+  updatedAt        DateTime
   twoFactorEnabled Boolean?
+  firstName        String
+  lastName         String
+  phoneNumber      String
+  companyName      String
+  companyAddress   String
+  country          String
+  avatar           String
+  role             String
+  sessions         Session[]
+  accounts         Account[]
   twofactors       TwoFactor[]
 
   @@unique([email])

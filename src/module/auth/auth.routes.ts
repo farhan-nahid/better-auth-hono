@@ -11,7 +11,7 @@ const tags = ["Auth"];
 const signIn = createRoute({
   tags,
   method: "post",
-  path: "/auth/sign-in",
+  path: "/auth/sign-in/email",
   summary: "Sign in",
   description: "Sign in to the application",
   request: {
@@ -42,7 +42,7 @@ const signIn = createRoute({
 const signInGoogle = createRoute({
   tags,
   method: "post",
-  path: "/auth/sign-in-google",
+  path: "/auth/sign-in/google",
   summary: "Sign in with Google",
   description: "Sign in with Google",
   request: {
@@ -59,7 +59,7 @@ const signInGoogle = createRoute({
 const signUp = createRoute({
   tags,
   method: "post",
-  path: "/auth/sign-up",
+  path: "/auth/sign-up/email",
   summary: "Sign up",
   description: "Sign up to the application",
   request: {
@@ -205,6 +205,31 @@ const jwks = createRoute({
   },
 });
 
+const getSession = createRoute({
+  tags,
+  method: "get",
+  path: "/auth/get-session",
+  summary: "Get session",
+  description: "Get session",
+  responses: {
+    [httpStatusCodes.OK]: jsonContent(
+      z.object({
+        session: z.object({
+          token: z.string(),
+          expiresIn: z.number(),
+        }),
+        user: z.object({
+          id: z.string(),
+          email: z.string(),
+          firstName: z.string(),
+          lastName: z.string(),
+        }),
+      }),
+      "Session",
+    ),
+  },
+});
+
 type SignInRoute = typeof signIn;
 type SignUpRoute = typeof signUp;
 type SignOutRoute = typeof signOut;
@@ -214,8 +239,9 @@ type ResetPasswordRoute = typeof resetPassword;
 type ForgetPasswordRoute = typeof forgetPassword;
 type JwksRoute = typeof jwks;
 type TwoFactorEnableRoute = typeof twoFactorEnable;
+type GetSessionRoute = typeof getSession;
 
-export type { ForgetPasswordRoute, JwksRoute, ResetPasswordRoute, SignInGoogleRoute, SignInRoute, SignOutRoute, SignUpRoute, TwoFactorEnableRoute, VerifyEmailRoute };
+export type { ForgetPasswordRoute, GetSessionRoute, JwksRoute, ResetPasswordRoute, SignInGoogleRoute, SignInRoute, SignOutRoute, SignUpRoute, TwoFactorEnableRoute, VerifyEmailRoute };
 
-  export { forgetPassword, jwks, resetPassword, signIn, signInGoogle, signOut, signUp, twoFactorEnable, verifyEmail };
+  export { forgetPassword, getSession, jwks, resetPassword, signIn, signInGoogle, signOut, signUp, twoFactorEnable, verifyEmail };
 

@@ -2,7 +2,7 @@ import type { AppRouteHandler } from "@/lib/types";
 
 import { auth } from "@/auth";
 
-import type { ForgetPasswordRoute, JwksRoute, ResetPasswordRoute, SignInGoogleRoute, SignInRoute, SignUpRoute, TwoFactorEnableRoute, VerifyEmailRoute } from "./auth.routes";
+import type { ForgetPasswordRoute, GetSessionRoute, JwksRoute, ResetPasswordRoute, SignInGoogleRoute, SignInRoute, SignUpRoute, TwoFactorEnableRoute, VerifyEmailRoute } from "./auth.routes";
 
 const signIn: AppRouteHandler<SignInRoute> = async (c) => {
   const { email, password, rememberMe, callbackURL } = c.req.valid("json");
@@ -57,9 +57,8 @@ const verifyEmail: AppRouteHandler<VerifyEmailRoute> = async (c) => {
 
 const twoFactorEnable: AppRouteHandler<TwoFactorEnableRoute> = async (c) => {
   const { password } = c.req.valid("json");
-  const token = "eyJhbGciOiJFZERTQSIsImtpZCI6IkFiaFdhdUlTY1Z3ZmlQdXZDc3BPaVRxczFSOHBZZVpuIn0.eyJpZCI6IkVCWGg2dnhkNjU4M3F2Z0NzRWhobnA5bEM3dUd6NWNkIiwibmFtZSI6IkpvaG4iLCJlbWFpbCI6ImpvaG4uZG9lMkBleGFtcGxlLmNvbSIsImVtYWlsVmVyaWZpZWQiOnRydWUsImltYWdlIjpudWxsLCJjcmVhdGVkQXQiOiIyMDI1LTAyLTA1VDA1OjExOjEyLjk0OVoiLCJ1cGRhdGVkQXQiOiIyMDI1LTAyLTA1VDA1OjExOjEyLjk0OVoiLCJ0d29GYWN0b3JFbmFibGVkIjpudWxsLCJsYXN0TmFtZSI6IkRvZSIsInBob25lTnVtYmVyIjoiKzEyMzQ1Njc4OTAiLCJjb21wYW55TmFtZSI6IkV4YW1wbGUgQ29ycCIsImNvbXBhbnlBZGRyZXNzIjoiMTIzIEV4YW1wbGUgU3QsIFNhbXBsZSBDaXR5LCBFWCAxMjM0NSIsImNvdW50cnkiOiJVU0EiLCJhdmF0YXIiOiJodHRwczovL2V4YW1wbGUuY29tL2F2YXRhcnMvam9obl9kb2UucG5nIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3Mzg3Mzg3MDEsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA5MCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA5MCIsImV4cCI6MTczODczOTYwMSwic3ViIjoiRUJYaDZ2eGQ2NTgzcXZnQ3NFaGhucDlsQzd1R3o1Y2QifQ.VA4bl7Nq09HxtXKcpsGB9g2oaU2gOCfet3e9lb0AYbEu1oWNEdS-jJoKAke_1LBod_U3lZKao5LY-0NBcITSDg";
 
-  await auth.api.getTOTPURI({ body: { password }, headers: new Headers({ Authorization: `Bearer ${token}` }) });
+  await auth.api.getTOTPURI({ body: { password } });
   return c.json({ message: "Two factor enabled" });
 };
 
@@ -68,4 +67,12 @@ const jwks: AppRouteHandler<JwksRoute> = async (c) => {
   return c.json(jwks);
 };
 
-export { forgetPassword, jwks, resetPassword, signIn, signInGoogle, signUp, twoFactorEnable, verifyEmail };
+const getSession: AppRouteHandler<GetSessionRoute> = async (c) => {
+  const headers = new Headers();
+  const authorizationHeader = c.req.header("Authorization") || "";
+  headers.append("Authorization", authorizationHeader);
+  const sessions = await auth.api.getSession({ headers: c.req.raw.headers });
+  return c.json(sessions);
+};
+
+export { forgetPassword, getSession, jwks, resetPassword, signIn, signInGoogle, signUp, twoFactorEnable, verifyEmail };

@@ -11,6 +11,7 @@ const SignUpSchema = z.object({
   email: z.string(),
   password: z.string(),
   name: z.string(),
+  firstName: z.string(),
   lastName: z.string(),
   avatar: z.string(),
   phoneNumber: z.string(),
@@ -18,7 +19,6 @@ const SignUpSchema = z.object({
   companyAddress: z.string(),
   country: z.string(),
   role: z.enum(["USER", "ADMIN"]).default("USER"),
-
 });
 
 const SignOutSchema = z.object({

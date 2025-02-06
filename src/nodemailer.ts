@@ -12,15 +12,15 @@ const transporter = nodemailer.createTransport({
   auth: { user: env.SMTP_USER, pass: env.SMTP_PASSWORD },
 });
 
-async function sendEmail({ to, subject, text }: { to: string; subject: string; text: string }) {
+async function sendEmail({ to, subject, html }: { to: string; subject: string; html: string }) {
   // eslint-disable-next-line no-console
-  console.log(`Sending email to ${to} with subject: ${subject} and text: ${text}`);
+  console.log(`Sending email to ${to} with subject: ${subject} and text: ${html}`);
 
   const emailOption: SMTPTransport.Options = {
     from: `"Better Auth" <${env.SMTP_USER}>`,
     to,
     subject,
-    html: text,
+    html,
   };
 
   await transporter.sendMail(emailOption);
