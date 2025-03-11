@@ -1,8 +1,8 @@
 import type { AppRouteHandler } from "@/lib/types";
 
-import { auth } from "@/auth";
+import { auth } from "@/lib/auth";
 
-import type { ForgetPasswordRoute, GetSessionRoute, JwksRoute, ResetPasswordRoute, SignInGoogleRoute, SignInRoute, SignUpRoute, TwoFactorEnableRoute, VerifyEmailRoute } from "./auth.routes";
+import type { ForgetPasswordRoute, JwksRoute, ResetPasswordRoute, SignInGoogleRoute, SignInRoute, SignUpRoute, TwoFactorEnableRoute, VerifyEmailRoute } from "./auth.routes";
 
 const signIn: AppRouteHandler<SignInRoute> = async (c) => {
   const { email, password, rememberMe, callbackURL } = c.req.valid("json");
@@ -67,12 +67,12 @@ const jwks: AppRouteHandler<JwksRoute> = async (c) => {
   return c.json(jwks);
 };
 
-const getSession: AppRouteHandler<GetSessionRoute> = async (c) => {
-  const headers = new Headers();
-  const authorizationHeader = c.req.header("Authorization") || "";
-  headers.append("Authorization", authorizationHeader);
-  const sessions = await auth.api.getSession({ headers: c.req.raw.headers });
-  return c.json(sessions);
-};
+// const getSession: AppRouteHandler<GetSessionRoute> = async (c) => {
+//   const headers = new Headers();
+//   const authorizationHeader = c.req.header("Authorization") || "";
+//   headers.append("Authorization", authorizationHeader);
+//   const sessions = await auth.api.getSession({ headers: c.req.raw.headers });
+//   return c.json(sessions);
+// };
 
-export { forgetPassword, getSession, jwks, resetPassword, signIn, signInGoogle, signUp, twoFactorEnable, verifyEmail };
+export { forgetPassword, jwks, resetPassword, signIn, signInGoogle, signUp, twoFactorEnable, verifyEmail };

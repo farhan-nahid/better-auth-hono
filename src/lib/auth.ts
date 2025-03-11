@@ -1,13 +1,12 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { bearer, jwt, openAPI, twoFactor } from "better-auth/plugins";
-import { validator, ZodAdapter } from "validation-better-auth";
+// import { validator, ZodAdapter } from "validation-better-auth";
 
+import env from "@/env";
 import { prisma } from "@/lib/prisma-db";
-import sendEmail from "@/nodemailer";
-
-import env from "./env";
-import { SignUpSchema } from "./module/auth/auth.schema";
+// import { SignUpSchema } from "@/module/auth/auth.schema";
+import { sendEmail } from "@/nodemailer";
 
 export const auth = betterAuth({
   appName: "better_auth_hono",
@@ -80,8 +79,8 @@ export const auth = betterAuth({
     jwt(),
     bearer(),
     twoFactor(),
-    validator([
-      { path: "/sign-up/email", adapter: ZodAdapter(SignUpSchema) },
-    ]),
+    // validator([
+    //   { path: "/sign-up/email", adapter: ZodAdapter(SignUpSchema) },
+    // ]),
   ],
 });

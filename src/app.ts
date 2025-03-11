@@ -1,12 +1,11 @@
 import { cors } from "hono/cors";
 
-import { auth } from "@/auth";
+import { auth } from "@/lib/auth";
 import { createApp } from "@/lib/create-app";
-// import authRoute from "@/module/auth/auth.index";
-import index from "@/module/index.route";
+import healthCheck from "@/module/index.route";
 
 import env from "./env";
-import { configureOpenApi } from "./lib/configure-open-api";
+import { configureAuthOpenApi, configureOpenApi } from "./lib/configure-open-api";
 
 const app = createApp();
 app.use(
@@ -21,23 +20,10 @@ app.use(
   }),
 );
 
-app.use("/api/v1/auth/*", async (c, next) => {
-  const session = await auth.api.getSession({ headers: c.req.raw.headers });
-
-  if (!session) {
-    c.set("user", null);
-    c.set("session", null);
-    return next();
-  }
-
-  c.set("user", session.user);
-  c.set("session", session.session);
-  return next();
-});
-
+configureAuthOpenApi(app);
 configureOpenApi(app);
 
-const routes = [index] as const;
+const routes = [healthCheck] as const;
 
 routes.forEach(route => app.route("/api/v1", route));
 
@@ -45,17 +31,17 @@ app.on(["POST", "GET"], "/api/v1/auth/*", (c) => {
   return auth.handler(c.req.raw);
 });
 
-app.get("/api/v1/session", async (c) => {
-  const session = c.get("session");
-  const user = c.get("user");
+// app.get("/api/v1/session", async (c) => {
+//   const session = c.get("session");
+//   const user = c.get("user");
 
-  if (!user) {
-    return c.body(null, 401);
-  }
+//   if (!user) {
+//     return c.body(null, 401);
+//   }
 
-  return c.json({ session, user });
-});
+//   return c.json({ session, user });
+// });
 
-export type AppType = typeof routes[number];
+// export type AppType = typeof routes[number];
 
 export { app };

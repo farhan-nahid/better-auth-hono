@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
   auth: { user: env.SMTP_USER, pass: env.SMTP_PASSWORD },
 });
 
-async function sendEmail({ to, subject, html }: { to: string; subject: string; html: string }) {
+export async function sendEmail({ to, subject, html }: { to: string; subject: string; html: string }) {
   // eslint-disable-next-line no-console
   console.log(`Sending email to ${to} with subject: ${subject} and text: ${html}`);
 
@@ -25,5 +25,3 @@ async function sendEmail({ to, subject, html }: { to: string; subject: string; h
 
   await transporter.sendMail(emailOption);
 }
-
-export default sendEmail;
