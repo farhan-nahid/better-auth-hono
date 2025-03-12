@@ -1,9 +1,11 @@
-import { createRoute } from "@hono/zod-openapi";
+import { createRoute, z } from "@hono/zod-openapi";
 
 import { httpStatusCodes } from "@/constants";
 import { createRouter } from "@/lib/create-app";
-import { jsonContent } from "@/openapi/helpers";
-import { createMessageObjectSchema } from "@/openapi/schemas";
+
+const HealthResponseSchema = z.object({
+  message: z.string(),
+});
 
 const router = createRouter().openapi(
   createRoute({
@@ -13,10 +15,14 @@ const router = createRouter().openapi(
     summary: "Health check",
     description: "Check if the server is running",
     responses: {
-      [httpStatusCodes.OK]: jsonContent(
-        createMessageObjectSchema("Auth Api server is running"),
-        "Auth Api server is running",
-      ),
+      [httpStatusCodes.OK]: {
+        description: "Server is running",
+        content: {
+          "application/json": {
+            schema: HealthResponseSchema,
+          },
+        },
+      },
     },
   }),
   (ctx) => {

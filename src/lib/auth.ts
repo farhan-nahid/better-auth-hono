@@ -6,7 +6,7 @@ import { bearer, jwt, openAPI, twoFactor } from "better-auth/plugins";
 import env from "@/env";
 import { prisma } from "@/lib/prisma-db";
 // import { SignUpSchema } from "@/module/auth/auth.schema";
-import { sendEmail } from "@/nodemailer";
+import { sendEmail } from "@/utils/send-email";
 
 export const auth = betterAuth({
   appName: "better_auth_hono",
