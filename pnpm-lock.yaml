@@ -42,8 +42,8 @@ importers:
         specifier: ^0.7.0
         version: 0.7.0(hono@4.10.3)(pino@9.6.0)
       nodemailer:
-        specifier: ^7.0.7
-        version: 7.0.7
+        specifier: ^7.0.11
+        version: 7.0.11
       pino:
         specifier: ^9.6.0
         version: 9.6.0
@@ -1618,8 +1618,8 @@ packages:
   node-releases@2.0.19:
     resolution: {integrity: sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw==}
 
-  nodemailer@7.0.7:
-    resolution: {integrity: sha512-jGOaRznodf62TVzdyhKt/f1Q/c3kYynk8629sgJHpRzGZj01ezbgMMWJSAjHADcwTKxco3B68/R+KHJY2T5BaA==}
+  nodemailer@7.0.11:
+    resolution: {integrity: sha512-gnXhNRE0FNhD7wPSCGhdNh46Hs6nm+uTyg+Kq0cZukNQiYdnCsoQjodNP9BQVG9XrcK/v6/MgpAPBUFyzh9pvw==}
     engines: {node: '>=6.0.0'}
 
   normalize-package-data@2.5.0:
@@ -3836,7 +3836,7 @@ snapshots:
 
   node-releases@2.0.19: {}
 
-  nodemailer@7.0.7: {}
+  nodemailer@7.0.11: {}
 
   normalize-package-data@2.5.0:
     dependencies:
