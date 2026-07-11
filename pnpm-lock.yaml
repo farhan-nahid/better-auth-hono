@@ -13,10 +13,10 @@ importers:
         version: 7.3.0(zod@3.24.1)
       '@hono/node-server':
         specifier: ^1.19.13
-        version: 1.19.13(hono@4.12.18)
+        version: 1.19.13(hono@4.12.25)
       '@hono/zod-openapi':
         specifier: ^0.18.3
-        version: 0.18.3(hono@4.12.18)(zod@3.24.1)
+        version: 0.18.3(hono@4.12.25)(zod@3.24.1)
       '@libsql/client':
         specifier: ^0.14.0
         version: 0.14.0
@@ -25,7 +25,7 @@ importers:
         version: 6.2.1(prisma@6.2.1)
       '@scalar/hono-api-reference':
         specifier: ^0.5.166
-        version: 0.5.166(hono@4.12.18)
+        version: 0.5.166(hono@4.12.25)
       better-auth:
         specifier: ^1.4.9
         version: 1.4.9(@prisma/client@6.2.1(prisma@6.2.1))(prisma@6.2.1)
@@ -36,11 +36,11 @@ importers:
         specifier: ^12.0.1
         version: 12.0.1
       hono:
-        specifier: ^4.12.18
-        version: 4.12.18
+        specifier: ^4.12.25
+        version: 4.12.25
       hono-pino:
         specifier: ^0.7.0
-        version: 0.7.0(hono@4.12.18)(pino@9.6.0)
+        version: 0.7.0(hono@4.12.25)(pino@9.6.0)
       nodemailer:
         specifier: ^9.0.1
         version: 9.0.1
@@ -1327,8 +1327,8 @@ packages:
       hono: '>=4.0.0'
       pino: '>=7.1.0'
 
-  hono@4.12.18:
-    resolution: {integrity: sha512-RWzP96k/yv0PQfyXnWjs6zot20TqfpfsNXhOnev8d1InAxubW93L11/oNUc3tQqn2G0bSdAOBpX+2uDFHV7kdQ==}
+  hono@4.12.25:
+    resolution: {integrity: sha512-2NFaIyNVgJmBs/ecmtGzlmluTFs5cHEWGTdu0t1HBwYzoGXOL5nUQBRMXsXWla5i4KkG//QMzVP88m1+I3fdAQ==}
     engines: {node: '>=16.9.0'}
 
   hookable@5.5.3:
@@ -1628,8 +1628,8 @@ packages:
     resolution: {integrity: sha512-+MrqnJRtxdF+xngFfUUkIMQrUUL0KsxbADUkn23Z/4ibGg192Q+z+CQyiYwvWTsYjJygmMR8+w3ZDa98Zh6ESg==}
     engines: {node: '>=12.0.0'}
 
-  nanoid@3.3.13:
-    resolution: {integrity: sha512-sPdqC6ByMVVGvF1ynvvMo0/o+oD1VX7DaHhijt1bFgjvBkHBib4t49GoNDhf2NDta4oeUNlaGbSt5K7qjZ955Q==}
+  nanoid@3.3.15:
+    resolution: {integrity: sha512-y7Wygv/7mEOvxTuEQDB8StXdMRBWf1kR/tlhAzBRUFkB2jfcLOAxO/SHmOO2zgz1pVgK29/kyupn059/bCHdjA==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
@@ -1781,8 +1781,8 @@ packages:
     resolution: {integrity: sha512-Q8qQfPiZ+THO/3ZrOrO0cJJKfpYCagtMUkXbnEfmgUjwXg6z/WBeOyS9APBBPCTSiDV+s4SwQGu8yFsiMRIudg==}
     engines: {node: '>=4'}
 
-  postcss@8.5.15:
-    resolution: {integrity: sha512-FfR8sjd4em2T6fb3I2MwAJU7HWVMr9zba+enmQeeWFfCbm+UOC/0X4DS8XtpUTMwWMGbjKYP7xjfNekzyGmB3A==}
+  postcss@8.5.16:
+    resolution: {integrity: sha512-vuwillviilfKZsg0VGj5R/YwwcHx4SLsIOI/7K6mQkWx+l5cUHTjj5g0AasTBcyXsbfTgrwsUNmVUb5xVwyPwg==}
     engines: {node: ^10 || ^12 || >=14}
 
   prelude-ls@1.2.1:
@@ -2424,20 +2424,20 @@ snapshots:
       '@eslint/core': 0.10.0
       levn: 0.4.1
 
-  '@hono/node-server@1.19.13(hono@4.12.18)':
+  '@hono/node-server@1.19.13(hono@4.12.25)':
     dependencies:
-      hono: 4.12.18
+      hono: 4.12.25
 
-  '@hono/zod-openapi@0.18.3(hono@4.12.18)(zod@3.24.1)':
+  '@hono/zod-openapi@0.18.3(hono@4.12.25)(zod@3.24.1)':
     dependencies:
       '@asteasolutions/zod-to-openapi': 7.3.0(zod@3.24.1)
-      '@hono/zod-validator': 0.4.2(hono@4.12.18)(zod@3.24.1)
-      hono: 4.12.18
+      '@hono/zod-validator': 0.4.2(hono@4.12.25)(zod@3.24.1)
+      hono: 4.12.25
       zod: 3.24.1
 
-  '@hono/zod-validator@0.4.2(hono@4.12.18)(zod@3.24.1)':
+  '@hono/zod-validator@0.4.2(hono@4.12.25)(zod@3.24.1)':
     dependencies:
-      hono: 4.12.18
+      hono: 4.12.25
       zod: 3.24.1
 
   '@humanfs/core@0.19.1': {}
@@ -2556,10 +2556,10 @@ snapshots:
     dependencies:
       '@prisma/debug': 6.2.1
 
-  '@scalar/hono-api-reference@0.5.166(hono@4.12.18)':
+  '@scalar/hono-api-reference@0.5.166(hono@4.12.25)':
     dependencies:
       '@scalar/types': 0.0.26
-      hono: 4.12.18
+      hono: 4.12.25
 
   '@scalar/openapi-types@0.1.6': {}
 
@@ -2730,7 +2730,7 @@ snapshots:
       '@vue/shared': 3.5.13
       estree-walker: 2.0.2
       magic-string: 0.30.21
-      postcss: 8.5.15
+      postcss: 8.5.16
       source-map-js: 1.2.1
 
   '@vue/compiler-ssr@3.5.13':
@@ -3406,13 +3406,13 @@ snapshots:
 
   help-me@5.0.0: {}
 
-  hono-pino@0.7.0(hono@4.12.18)(pino@9.6.0):
+  hono-pino@0.7.0(hono@4.12.25)(pino@9.6.0):
     dependencies:
       defu: 6.1.4
-      hono: 4.12.18
+      hono: 4.12.25
       pino: 9.6.0
 
-  hono@4.12.18: {}
+  hono@4.12.25: {}
 
   hookable@5.5.3: {}
 
@@ -3862,7 +3862,7 @@ snapshots:
 
   mylas@2.1.13: {}
 
-  nanoid@3.3.13: {}
+  nanoid@3.3.15: {}
 
   nanostores@1.2.0: {}
 
@@ -4021,9 +4021,9 @@ snapshots:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
 
-  postcss@8.5.15:
+  postcss@8.5.16:
     dependencies:
-      nanoid: 3.3.13
+      nanoid: 3.3.15
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
